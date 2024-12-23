@@ -27,7 +27,6 @@ module.exports = {
 	],
 
 	plugins: ['react', 'jsx-a11y', '@typescript-eslint', 'import', 'prettier'],
-
 	overrides: [
 		{
 			files: ['app/components/ui/*.tsx'],
@@ -60,5 +59,7 @@ module.exports = {
 	],
 	rules: {
 		'prettier/prettier': 'warn',
+		'@typescript-eslint/no-explicit-any': 'off',
+		'@typescript-eslint/no-unused-vars': 'warn',
 	},
 };
