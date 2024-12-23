@@ -1,10 +1,11 @@
-import { Link } from '@remix-run/react';
-import { Code, Github, Layout, Palette, Shield, CheckCircle2, Terminal, Copy } from 'lucide-react';
+import { Link, useSubmit } from '@remix-run/react';
+import { Code, Github, Layout, Palette, Shield, CheckCircle2, Terminal, Copy, LogOut, LogIn } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import { Badge } from '~/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { toast } from 'sonner';
 import { ModeToggle } from '~/components/mode-toggle';
+import { useAuth } from '~/hooks/use-auth';
 
 const features = [
 	{
@@ -48,6 +49,8 @@ const technicalFeatures = [
 ];
 
 export default function HomePage() {
+	const { user, isAuthenticated } = useAuth();
+	const submit = useSubmit();
 	const copyInstallCommand = () => {
 		navigator.clipboard.writeText('npx create-remix@latest quickinit-remix');
 		toast.success('Command Copied', {
@@ -58,6 +61,23 @@ export default function HomePage() {
 	return (
 		<div className='min-h-screen bg-background'>
 			<div className='absolute right-4 top-4'>
+				{isAuthenticated ? (
+					<Button
+						onClick={() => {
+							submit(null, { method: 'post', action: '/logout' });
+						}}
+						size='icon'
+						variant={'ghost'}
+					>
+						<LogOut />
+					</Button>
+				) : (
+					<Button asChild size='icon' variant={'ghost'}>
+						<Link to='/login'>
+							<LogIn />
+						</Link>
+					</Button>
+				)}
 				<ModeToggle />
 			</div>
 
@@ -70,7 +90,11 @@ export default function HomePage() {
 					<p className='mx-auto max-w-2xl text-xl text-muted-foreground'>
 						Enterprise-Grade Remix Starter Kit for Rapid Development
 					</p>
-
+					{isAuthenticated && user && (
+						<div className='mt-4 text-lg text-muted-foreground'>
+							Logged in as: <strong>{user?.name}</strong> ({user?.email})
+						</div>
+					)}
 					<div className='mt-8 flex justify-center space-x-4'>
 						<Button variant='secondary' asChild size='lg'>
 							<Link to='https://github.com/quickinit/quickinit-remix' target='_blank' rel='noopener noreferrer'>
