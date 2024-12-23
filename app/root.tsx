@@ -6,6 +6,7 @@ import { LiveReload, Outlet, Scripts, ScrollRestoration, Links, Meta, useLoaderD
 import { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 import './tailwind.css';
 import { Toaster } from './components/ui/sonner';
+export { ErrorBoundary } from './components/global-error-boundary';
 
 // Return the theme from the session storage using the loader
 export async function loader({ request }: LoaderFunctionArgs) {
