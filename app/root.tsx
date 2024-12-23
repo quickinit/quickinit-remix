@@ -1,11 +1,12 @@
 import { clsx } from 'clsx';
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes';
 
-import { themeSessionResolver } from './sessions.server';
-import { LiveReload, Outlet, Scripts, ScrollRestoration, Links, Meta, useLoaderData } from '@remix-run/react';
+import { themeSessionResolver } from './services/sessions.server';
+import { Outlet, Scripts, ScrollRestoration, Links, Meta, useLoaderData } from '@remix-run/react';
 import { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 import './tailwind.css';
 import { Toaster } from './components/ui/sonner';
+import { getAuthUser } from './services/auth.server';
 export { ErrorBoundary } from './components/global-error-boundary';
 
 // Return the theme from the session storage using the loader
@@ -13,6 +14,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	const { getTheme } = await themeSessionResolver(request);
 	return {
 		theme: getTheme(),
+		user: await getAuthUser(request),
 	};
 }
 export const links: LinksFunction = () => [
@@ -27,6 +29,7 @@ export const links: LinksFunction = () => [
 		href: 'https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap',
 	},
 ];
+
 export default function AppWithProviders() {
 	const data = useLoaderData<typeof loader>();
 	return (
@@ -53,7 +56,6 @@ export function App() {
 				<Toaster duration={2500} richColors closeButton position='top-right' />
 				<ScrollRestoration />
 				<Scripts />
-				<LiveReload />
 			</body>
 		</html>
 	);
