@@ -1,15 +1,15 @@
-import { Form as RemixForm, Link, useActionData, useNavigation, useSubmit } from '@remix-run/react';
+import { Form as RemixForm, Link, useActionData, useNavigation, useSubmit, redirect } from '@remix-run/react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '~/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-import { Input } from '~/components/ui/input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import { PasswordInput } from '~/components/ui/password-input';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { PasswordInput } from '@/components/ui/password-input';
 import { type ActionFunctionArgs } from '@remix-run/node';
-import { loginWithCredentials, requireAnonymous } from '~/services/auth.server';
-import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
+import { authService } from '@/services';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 
 const loginSchema = z.object({
@@ -20,12 +20,15 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>;
 
 export async function loader({ request }: ActionFunctionArgs) {
-	await requireAnonymous(request);
+	const user = await authService.getAuthUser(request);
+	if (user) {
+		return redirect('/');
+	}
 	return null;
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-	return loginWithCredentials(request);
+	return authService.loginWithCredentials(request);
 }
 
 export default function LoginPage() {

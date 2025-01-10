@@ -1,10 +1,10 @@
 import { isRouteErrorResponse, useRouteError, Links, Meta, Scripts } from '@remix-run/react';
 import { AlertTriangle, Home, RefreshCw, FileQuestion, Ban, Shield, ServerCrash } from 'lucide-react';
-import { Button } from '~/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import { Separator } from '~/components/ui/separator';
-import { ScrollArea } from '~/components/ui/scroll-area';
-import '~/tailwind.css';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import '@/tailwind.css';
 
 interface ErrorDetails {
 	title: string;

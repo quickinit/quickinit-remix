@@ -1,5 +1,3 @@
-'use client';
-
 import { useTheme } from 'remix-themes';
 import { Toaster as Sonner } from 'sonner';
 

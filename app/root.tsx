@@ -1,12 +1,12 @@
 import { clsx } from 'clsx';
 import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes';
 
-import { themeSessionResolver } from './services/sessions.server';
+import { themeSessionResolver } from './lib/sessions.server';
 import { Outlet, Scripts, ScrollRestoration, Links, Meta, useLoaderData } from '@remix-run/react';
 import { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 import './tailwind.css';
 import { Toaster } from './components/ui/sonner';
-import { getAuthUser } from './services/auth.server';
+import { authService } from './services';
 export { ErrorBoundary } from './components/global-error-boundary';
 
 // Return the theme from the session storage using the loader
@@ -14,7 +14,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	const { getTheme } = await themeSessionResolver(request);
 	return {
 		theme: getTheme(),
-		user: await getAuthUser(request),
+		user: await authService.getAuthUser(request),
 	};
 }
 export const links: LinksFunction = () => [

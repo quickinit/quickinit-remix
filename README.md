@@ -116,7 +116,7 @@ This template uses Zod with Remix Forms for enhanced form handling:
 ```typescript
 import { z } from "zod";
 import { Form } from "@remix-run/react";
-import { validateForm } from "~/utils/validation";
+import { validateForm } from "@/utils/validation";
 
 const schema = z.object({
   email: z.string().email(),
