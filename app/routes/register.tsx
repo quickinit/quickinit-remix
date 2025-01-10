@@ -1,16 +1,16 @@
-import { Form as RemixForm, Link, useActionData, useNavigation, useSubmit } from '@remix-run/react';
+import { Form as RemixForm, Link, useActionData, useNavigation, useSubmit, redirect } from '@remix-run/react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '~/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
-import { Input } from '~/components/ui/input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import { PasswordInput } from '~/components/ui/password-input';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { PasswordInput } from '@/components/ui/password-input';
 import { type ActionFunctionArgs } from '@remix-run/node';
-import { createUser, loginWithCredentials, requireAnonymous } from '~/services/auth.server';
-import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
+import { authService } from '@/services';
 
 const registerSchema = z
 	.object({
@@ -27,7 +27,10 @@ const registerSchema = z
 type RegisterSchema = z.infer<typeof registerSchema>;
 
 export async function loader({ request }: ActionFunctionArgs) {
-	await requireAnonymous(request);
+	const user = await authService.getAuthUser(request);
+	if (user) {
+		return redirect('/');
+	}
 	return null;
 }
 
@@ -42,8 +45,8 @@ export async function action({ request }: ActionFunctionArgs) {
 	}
 
 	try {
-		await createUser(data.data);
-		return loginWithCredentials(request);
+		await authService.createUser(data.data);
+		return authService.loginWithCredentials(request);
 	} catch (error) {
 		return {
 			error: error instanceof Error ? error.message : 'An unknown error occurred',
@@ -56,7 +59,6 @@ export default function RegisterPage() {
 	const actionData = useActionData<typeof action>();
 	const isSubmitting = navigation.state === 'submitting';
 	const submit = useSubmit();
-
 	const form = useForm<RegisterSchema>({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {

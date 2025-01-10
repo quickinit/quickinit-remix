@@ -1,11 +1,11 @@
 import { Link, useSubmit } from '@remix-run/react';
 import { Code, Github, Layout, Palette, Shield, CheckCircle2, Terminal, Copy, LogOut, LogIn } from 'lucide-react';
-import { Button } from '~/components/ui/button';
-import { Badge } from '~/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { toast } from 'sonner';
-import { ModeToggle } from '~/components/mode-toggle';
-import { useAuth } from '~/hooks/use-auth';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ModeToggle } from '@/components/mode-toggle';
+import { useAuth } from '@/hooks/use-auth';
+import { notify } from '@/messages';
 
 const features = [
 	{
@@ -53,9 +53,7 @@ export default function HomePage() {
 	const submit = useSubmit();
 	const copyInstallCommand = () => {
 		navigator.clipboard.writeText('npx create-remix@latest quickinit-remix');
-		toast.success('Command Copied', {
-			description: 'Installation command copied to clipboard!',
-		});
+		notify.success('Copied to clipboard');
 	};
 
 	return (
