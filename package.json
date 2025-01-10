@@ -11,7 +11,7 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"typecheck": "tsc",
-		"prepare": "husky"
+		"prepare": "husky install"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.9.1",
