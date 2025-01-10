@@ -3,7 +3,7 @@ import { Code, Github, Layout, Palette, Shield, CheckCircle2, Terminal, Copy, Lo
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ModeToggle } from '@/components/mode-toggle';
+import { ModeToggle } from '@/components/ModeToggle';
 import { useAuth } from '@/hooks/use-auth';
 import { notify } from '@/messages';
 

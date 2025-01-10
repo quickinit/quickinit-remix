@@ -7,7 +7,7 @@ import { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 import './tailwind.css';
 import { Toaster } from './components/ui/sonner';
 import { authService } from './services';
-export { ErrorBoundary } from './components/global-error-boundary';
+export { ErrorBoundary } from './components/GlobalErrorBoundary';
 
 // Return the theme from the session storage using the loader
 export async function loader({ request }: LoaderFunctionArgs) {
