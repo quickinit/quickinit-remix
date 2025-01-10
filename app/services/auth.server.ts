@@ -1,9 +1,8 @@
-import { prisma } from '@/lib/db.server';
+import { prisma, authenticator } from '@/lib';
 import { User } from '@prisma/client';
 import { LoginFormData, RegisterFormData } from '@/types';
 import { authSessionStorage } from '../lib/sessions.server';
 import { redirect } from '@remix-run/node';
-import { authenticator } from '@/lib/auth.server';
 import { cryptoUtils } from '@/utils/server';
 import { logger } from '@/logger';
 
