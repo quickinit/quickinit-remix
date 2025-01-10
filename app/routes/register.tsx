@@ -59,6 +59,7 @@ export default function RegisterPage() {
 	const actionData = useActionData<typeof action>();
 	const isSubmitting = navigation.state === 'submitting';
 	const submit = useSubmit();
+
 	const form = useForm<RegisterSchema>({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
